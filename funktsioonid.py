@@ -357,7 +357,7 @@ def näita_värvi(värv): #See väljastab mingi värvi kõigi kruntide muutujad 
                     rida = f.readline() #võtab uue rea, et igavest loopi ei jääks
                     
     else:
-        kruntide_maatriks = "See pole tänavanimi"
+        kruntide_maatriks = "See pole krundinimi"
                       
                     
     return(kruntide_maatriks)#Okei, see pole sõna otseses mõttes maatriks, kuid ma ei viitsi seda siin selleks muuta, kui seda pole kindlusega nii vaja.
@@ -446,6 +446,10 @@ def pandi_krunt(krunt, mängija):
 
                     #See käsk on mõeldud mängijaga otse tegutsema. Täpsemalt see väljastab mängijale info mingit värvi kaardi kohta.
 def print_värv(matrix):#See võib olla osa näita_värvi käsust, kuid arvutil on lihtsam leida infot järjendist, kui sõnest.
+    
+    if type(matrix) != list:
+        return("See pole valikus olev värv.")
+    
     print("Selle värvi kruntide info on järgnev:\n")
     
     if len(matrix) == 14: #Kui ühes värvis on 2 krunti
@@ -469,17 +473,25 @@ def print_värv(matrix):#See võib olla osa näita_värvi käsust, kuid arvutil 
             print("Krundi pant:", matrix[(i*7)+5])
             print("Hotelli hind:", matrix[(i*7)+6])
             print("") #Üks rida vahele ilu pärast
+    return("")# et "none" lõpus vältida
             
 def print_krunt(järjend): #pmst sama, mis print_värv, kuid ühe krundi jaoks
-    print("Selle krundi info on järgnev: \n")
-    print("Krundinimi:", järjend[0])
-    print("Krundi hind:", järjend[1])
-    print("Krundi rent:", järjend[2])
-    print("Krundi rent, kui omanik omab kogu värvi:", järjend[3])
-    print("Krundi rent hotelliga:", järjend[4])
-    print("Krundi pant:", järjend[5])
-    print("Hotelli hind:", järjend[6])
     
+    if type(järjend) == str: #kui krundi nimi sisestati valesti
+        return("See pole krundi nimi")
+    
+    else:
+        print("Selle krundi info on järgnev: \n")
+        print("Krundinimi:", järjend[0])
+        print("Krundi hind:", järjend[1])
+        print("Krundi rent:", järjend[2])
+        print("Krundi rent, kui omanik omab kogu värvi:", järjend[3])
+        print("Krundi rent hotelliga:", järjend[4])
+        print("Krundi pant:", järjend[5])
+        print("Hotelli hind:", järjend[6])
+    return("") #et "none" lõpus vältida
+    
+
     
     
 def tulumaks(mängija): #kui maandub tulumaksule
@@ -560,19 +572,42 @@ def kas_värvid_on_koos(mängija): #selle funktsiooni eesmärk on näidata, kas 
     
     
     
+def print_mängija(mängija): #see funktsioon väljastab mängijale info mingi mängija raha ja kaartide kohta
+    print("Sul on " + str(mängija[0]) + " eurot")
     
+    if len(mängija) > 1:
+        if "vangla_vabastus" not in mängija:
+            print("Teie krundid on järgnevad: ")
+            for el in range(len(mängija)-1): #käib ükshaaval kõik krundid läbi
+                print(mängija[el+1]) #el+1, et raha krundiks ei peaks
+        else:
+            indeks = mängija.index("vangla_vabastus") #eemaldab vanglast vabastuse kaardi
+            del mängija[indeks]
+            print("Teie krundid on järgnevad: ")
+            for el in range(len(mängija)-1): #käib ükshaaval kõik krundid läbi
+                print(mängija[el+1]) #el+1, et raha krundiks ei peaks
+                
+            mängija.append("vangla_vabastus")#lisab vangistpääsemise kaardi tagasi
+            print("\n" + "Teil on ka vanglast tasuta pääsemise kaart.")
     
-    
+    return("")#et "none" lõpus vältida
+
+
+
     
 def käsud():
-    print("""Käsud, mida te saate kasutada oma käigu ajal on:
+    return("""Käsud, mida te saate kasutada oma käigu ajal on:
     
-1. värvid (värvinimi):
+1. värv (värvinimi):
     Kui soovite näha mingi värvi kruntide nimesi, hindu, rente jms. Värvinimed, rentidelt kasvavas järjekorras on järgnevad:
         pruunid, helesinised, roosad, oranzid, punased, kollased, rohelised, tumesinised
+        
 2. krunt (krundinimi):
     Kui soovite näha mingi krundi hinda, renti, hotelli maksuvust jms. Et teada saada mingi krundi nime,
     kasutage käsku "värvid (värvinimi)"
+    
+3. isik (mängija nimi):
+    Kui soovite teada, kui palju raha on mingil mängijal ning mis kaardid neil on.
 """)
 
 
