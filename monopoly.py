@@ -1,6 +1,11 @@
+from time import sleep
 import random
 import funktsioonid
 f = funktsioonid
+#tp märgib tasuta parkimist, ehk ühegi mõjuta kohti.
+mängulaud = ("tp","Jaama tänav" ,"tp","Soinaste tänav" ,"tp","tp","Ravila tänav" ,"tp","Ringtee tänav" ,"Ilmatsalu tänav" ,"vangla","Vabaduse pst" ,"tp","Sõbra tänav" ,"Kesk kaar" ,"tp","Kalevi tänav" ,"tp","F.R Kreutzvaldi tänav" ,"Vaksali tänav" ,"tp","Pikk tänav" ,"tp","Aardla tänav" ,"Puussepa tänav" ,"tp","Puiestee tänav" ,"Kalda tee" ,"tp","Võru tänav" ,"tp","Turu tänav" ,"Narva maantee" ,"tp","Riia tänav" ,"tp","tp","Rüütli tänav" ,"tp","Raekoja plats" ,)
+
+
 
 def vangla(kinni):
     i=1
@@ -16,37 +21,87 @@ def vangla(kinni):
         
     
 
-def liikumine(mängija_asetus):
-    käik=1
+def liikumine(mängija_asetus, käik): #kommenteerin, et mõista, mis täpsemalt toimub
     i=0
     sammud=0
+    kinni = False
+    
     while True:
-        print("Veeretan täringuid")
+        
+        print("Veeretan täringuid") #täringumehhanism
         täring_1=random.randint(1,6)
         täring_2=random.randint(1,6)
-        print(täring_1,täring_2)
-        if täring_1==täring_2:
+        
+        print("Veeretasid 1. täringul numbri " + str(täring_1))
+        sleep(0.3)
+        print("Veeretasid 2. täringul numbri " + str(täring_2))
+        sleep(0.5)
+        
+        
+        if int(täring_1) == int(täring_2): #duublimehhanism
             i+=1
-            if i==3:
+            
+            sammud=täring_1+täring_2 #uptate'b mängija asetust
+            mängija_asetus += sammud
+            
+            print("Veeretasid duubli, veeretab uuesti.")
+            
+            for u in range(2):#veeretab uuesti
+                
+                täring_1=random.randint(1,6)
+                täring_2=random.randint(1,6)
+                
+                print("Veeretasid 1. täringul numbri " + str(täring_1))
+                sleep(0.3)
+                print("Veeretasid 2. täringul numbri " + str(täring_2))
+                sleep(0.5)
+                
+                sammud=täring_1+täring_2
+                mängija_asetus += sammud
+                
+                if int(täring_1) != int(täring_2):
+                    i += 1
+                    break
+                
+                else:
+                    print("Veeretasid duubli, veeretab uuesti.")
+                    i += 1
+                    
+            if i >= 4:
                 print("Lähed vangi!")
                 i=0
                 käik+=1
                 kinni=True
-                break
+                [mängija_asetus, käik, kinni]
+            
             else:
-                sammud=täring_1+täring_2
-                mängija_asetus=mängulaud[sammud+mängija_asetus]
+                
                 if mängija_asetus>41:
                     mängija_asetus-40
-                return mängija_asetus
-        sammud=täring_1+täring_2
-        mängija_asetus=mängulaud[sammud+mängija_asetus]
+                
+                käik+=1
+                return [mängija_asetus, käik, kinni]
+            
+
+        else:
+            if mängija_asetus>41:
+                mängija_asetus-40
+                sammud = täring_1+täring_2
+                mängija_asetus += sammud
+                käik+=1
+                return [mängija_asetus, käik, kinni]
+        
+        sammud = täring_1+täring_2
+        mängija_asetus += sammud
+        
         if mängija_asetus>41:
             mängija_asetus-40
         käik+=1
-        return mängija_asetus
+        return [mängija_asetus, käik, kinni]
 
-#############################################################################
+#####################################################################################################################
+#####################################################################################################################
+#####################################################################################################################
 #siit algab mäng
     
 käsk = input('''===MONOPOL===
@@ -94,7 +149,7 @@ while käsk != "lõpp":
         else:
             print("See pole mängija nimi.\n")
     
-    elif käsk == "käigu lõpp": #See käsk on selline, et initsiatiiv vahetub ning uue mängija eest veeretatakse ning maandutakse kuskil.
+    #elif käsk == "käigu lõpp": #See käsk on selline, et initsiatiiv vahetub ning uue mängija eest veeretatakse ning maandutakse kuskil.
         
             
             
