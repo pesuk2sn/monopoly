@@ -14,21 +14,21 @@ y=800
 width = 20
 height=20
 vel= 10
-ikoon=pygame.image.load("ikoon.png")
+ikoon=pygame.image.load("pildid/ikoon.png")
 pygame.display.set_icon(ikoon)
 pygame.display.set_caption("Monopoly")
-laua_ikoon=pygame.image.load("laua_ikoon.png")
+laua_ikoon=pygame.image.load("pildid/laua_ikoon.png")
 laua_ikoon=pygame.transform.scale(laua_ikoon, (508.4, 133.6))
 laua_ikoon=pygame.transform.rotate(laua_ikoon, 45)
-vangla_ikoon=pygame.image.load("vangla_ikoon.jpg")
+vangla_ikoon=pygame.image.load("pildid/vangla_ikoon.jpg")
 vangla_ikoon=pygame.transform.scale(vangla_ikoon,(72,72.125))
-parkimise_ikoon=pygame.image.load("tasuta_parkimine.png")
+parkimise_ikoon=pygame.image.load("pildid/tasuta_parkimine.png")
 parkimise_ikoon=pygame.transform.scale(parkimise_ikoon,(110,111.3))
 parkimise_ikoon=pygame.transform.rotate(parkimise_ikoon, 235)
-vanglasse_ikoon=pygame.image.load("vangi_ikoon.png")
+vanglasse_ikoon=pygame.image.load("pildid/vangi_ikoon.png")
 vanglasse_ikoon=pygame.transform.scale(vanglasse_ikoon,(90,90))
 vanglasse_ikoon=pygame.transform.rotate(vanglasse_ikoon, -45)
-go_ikoon=pygame.image.load("go.jpg")
+go_ikoon=pygame.image.load("pildid/go.jpg")
 go_ikoon=pygame.transform.scale(go_ikoon,(106,100.2))
 ristkülik=5, 5, 5, 5, 5
 font=pygame.font.SysFont("Microsoft Sans Serif", 10)
