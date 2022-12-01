@@ -431,17 +431,10 @@ def lisa_krunt(krunt, mängija):
     
 def pandi_krunt(krunt, mängija):
     i = mängija.index(krunt) #võtab krundi indeksi
-    with open("Monopoli krundid.txt", "r", encoding="UTF-8") as f: #Avab faili lugemiseks
-        rida = f.readline()
-        while rida:
-            rida = rida.replace("\n", "") #saab reavahetusest lahti
-            if rida == krunt:
-                for u in range(4): #Loeb ridu nimest alates, kuni jõuab pandini
-                     rida = f.readline()
-                pant = int(rida)
-                mängija[0] += pant #lisab mängijale pandi hinna
-                del mängija[i] #eemaldab krundi mängijalt
-                return(mängija)
+    pant = (näita_krunti(krunt))[5]
+    mängija[0] += int(pant) #lisab mängijale pandi hinna
+    del mängija[i] #eemaldab krundi mängijalt
+    return(mängija)
             
 
                     #See käsk on mõeldud mängijaga otse tegutsema. Täpsemalt see väljastab mängijale info mingit värvi kaardi kohta.
@@ -573,7 +566,7 @@ def kas_värvid_on_koos(mängija): #selle funktsiooni eesmärk on näidata, kas 
     
     
 def print_mängija(mängija): #see funktsioon väljastab mängijale info mingi mängija raha ja kaartide kohta
-    print("Sul on " + str(mängija[0]) + " eurot")
+    print("Teil on " + str(mängija[0]) + " eurot")
     
     if len(mängija) > 1:
         if "vangla_vabastus" not in mängija:
@@ -608,12 +601,20 @@ def käsud():
     
 3. isik (mängija nimi):
     Kui soovite teada, kui palju raha on mingil mängijal ning mis kaardid neil on.
+    
+4. käigu lõpp:
+    Kui soovite oma käigu üle anda. See on praegu ainus viis, kuidas krunte osta.
+    Kui te seda oma käigu alguses ei tee, kaotate selle võimaluse
+    
+5. pandi (krundinimi):
+    Kui soovite oma krundi pangale pantida. Saate selle eest pool ostuhinnast.
+    Täpsemaks infoks kasutage käsku krunt (krundinimi)
+    
+6. lõpp:
+    Kui soovite mängu enneaegselt lõpetada.
 """)
 
 
         
-
-
-
     
     

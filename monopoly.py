@@ -1,14 +1,24 @@
-from time import sleep
-import random
 import funktsioonid
 f = funktsioonid
-#tp märgib tasuta parkimist, ehk ühegi mõjuta kohti.
-mängulaud = ("tp","Jaama tänav" ,"tp","Soinaste tänav" ,"tp","tp","Ravila tänav" ,"tp","Ringtee tänav" ,"Ilmatsalu tänav" ,"vangla","Vabaduse pst" ,"tp","Sõbra tänav" ,"Kesk kaar" ,"tp","Kalevi tänav" ,"tp","F.R Kreutzvaldi tänav" ,"Vaksali tänav" ,"tp","Pikk tänav" ,"tp","Aardla tänav" ,"Puussepa tänav" ,"tp","Puiestee tänav" ,"Kalda tee" ,"tp","Võru tänav" ,"tp","Turu tänav" ,"Narva maantee" ,"tp","Riia tänav" ,"tp","tp","Rüütli tänav" ,"tp","Raekoja plats" ,)
+from time import sleep
+import random
 
+def täringuvise():
+    täring_1=random.randint(1,6)
+    täring_2=random.randint(1,6)
+    print(täring_1,täring_2)
+    sammud=täring_1+täring_2
+    return sammud
 
+def vanglaFunk(i,mängija_asetus, vanglas): #vanglas olemise funktsioon
+    if i==3: #kui kolm korda pole mängija saanud duublit, siis  kolmas kord saab mängija vabaks
+        i=0
+        vanglas=False
+        print("Vabanesid vanglast!")
+        mängija_asetus=mängulaud[täringuvise()+mängulaud.index(mängija_asetus)]
+        print("Mängija on ruudul "+str(mängija_asetus))
+        return mängija_asetus, vanglas, i
 
-def vangla(kinni):
-    i=1
     print("Veeretan täringuid")
     täring_1=random.randint(1,6)
     täring_2=random.randint(1,6)
@@ -56,14 +66,6 @@ def liikumine(käik,mängija_asetus, mängija_nr,vanglas, mängija_vangla_käik,
             return mängija_asetus, vanglas, mängija_vangla_käik
 
         ("Veeretan täringuid")
-def liikumine(mängija_asetus, käik): #kommenteerin, et mõista, mis täpsemalt toimub
-    i=0
-    sammud=0
-    kinni = False
-    
-    while True:
-        
-        print("Veeretan täringuid") #täringumehhanism
         täring_1=random.randint(1,6)
         täring_2=random.randint(1,6)
         print(täring_1,täring_2)
@@ -136,73 +138,12 @@ mängija1_asetus="Go" #Mängija asetus. Algpositsioon on stardiruut "Go"
 mängija2_asetus="Go"
 mängija1_vanglas=False #Kui selle staatus on True, käivitub vangla funktsioon
 mängija2_vanglas=False
-        
-        print("Veeretasid 1. täringul numbri " + str(täring_1))
-        sleep(0.3)
-        print("Veeretasid 2. täringul numbri " + str(täring_2))
-        sleep(0.5)
-        
-        
-        if int(täring_1) == int(täring_2): #duublimehhanism
-            i+=1
-            
-            sammud=täring_1+täring_2 #uptate'b mängija asetust
-            mängija_asetus += sammud
-            
-            print("Veeretasid duubli, veeretab uuesti.")
-            
-            for u in range(2):#veeretab uuesti
-                
-                täring_1=random.randint(1,6)
-                täring_2=random.randint(1,6)
-                
-                print("Veeretasid 1. täringul numbri " + str(täring_1))
-                sleep(0.3)
-                print("Veeretasid 2. täringul numbri " + str(täring_2))
-                sleep(0.5)
-                
-                sammud=täring_1+täring_2
-                mängija_asetus += sammud
-                
-                if int(täring_1) != int(täring_2):
-                    i += 1
-                    break
-                
-                else:
-                    print("Veeretasid duubli, veeretab uuesti.")
-                    i += 1
-                    
-            if i >= 4:
-                print("Lähed vangi!")
-                i=0
-                käik+=1
-                kinni=True
-                [mängija_asetus, käik, kinni]
-            
-            else:
-                
-                if mängija_asetus>41:
-                    mängija_asetus-40
-                
-                käik+=1
-                return [mängija_asetus, käik, kinni]
-            
+panditud = False
 
-        else:
-            if mängija_asetus>41:
-                mängija_asetus-40
-                sammud = täring_1+täring_2
-                mängija_asetus += sammud
-                käik+=1
-                return [mängija_asetus, käik, kinni]
-        
-        sammud = täring_1+täring_2
-        mängija_asetus += sammud
-        
-        if mängija_asetus>41:
-            mängija_asetus-40
-        käik+=1
-        return [mängija_asetus, käik, kinni]
+mängija1_vara = [mängija1_raha] #sellest saab list, kus sees on mängija raha, krundid ja vanglastpääsu kaart
+mängija2_vara = [mängija2_raha]
+
+
 
 #####################################################################################################################
 #####################################################################################################################
@@ -210,7 +151,7 @@ mängija2_vanglas=False
 #siit algab mäng
     
 käsk = input('''===MONOPOL===
-Teretulemast maailmakuulsa lauamängu Monopol arvutimängu!
+Tere tulemast maailmakuulsa lauamängu Monopol arvutimängu!
 Leidke konkurent, võtke istet ja jätke empaatiaga hüvasti!
 Alustamiseks kirjutage "start".
 ''')
@@ -219,14 +160,10 @@ while käsk != "start":
     käsk = input('''Kirjutage "start" ilma jutumärkideta.
 ''')
     
-print('Mäng on alanud. Selleks, et teada, mis te teha saate kirjutage "käsud". Esimesena käib mängija_1, teisena mängija_2.')
-mängija_1 = [750] #jagab mängijatele raha ära
-mängija_2 = [750]
-asetus_1 = 1
-asetus_2 = 1
+print('Mäng on alanud. Selleks, et teada, mis te teha saate kirjutage "käsud". \nEsimesena käib mängija_1, teisena mängija_2. Käigu alustamiseks kirjutage "käigu lõpp."')
 
 
-while käsk != "lõpp":
+while käsk != "lõpp" and käsk != "võit":
     
     käsk = input("Valige, mida teha: ")
     
@@ -234,58 +171,245 @@ while käsk != "lõpp":
         print(f.käsud())
         
     elif käsk.split()[0] == "värv":
-        print(f.print_värv(f.näita_värvi(käsk.split()[1]))) #rakendab kaksfunktsiooni, millest sisemise argument on värvi nimi
+        print(f.print_värv(f.näita_värvi(käsk.split()[1]))) #rakendab kaks funktsiooni, millest sisemise argument on värvi nimi
         print("") #reavahe
         
     elif käsk.split()[0] == "krunt":
         tänava_nim_järjend = käsk.split()
         del tänava_nim_järjend[0]
-        tänava_nim = " ".join(tänava_nim_järjend)
+        tänava_nim = " ".join(tänava_nim_järjend) #selleks, et krundinimed on mitme sõnalised
         print(f.print_krunt(f.näita_krunti(tänava_nim))) #pmst sama, mis eelmine aga ühe krundi kohta
         print("") #reavahe
         
     elif käsk.split()[0] == "isik":
         
         if käsk.split()[1] == "mängija_1":
-            print(f.print_mängija(mängija_1))
+            print(f.print_mängija(mängija1_vara))
         elif käsk.split()[1] == "mängija_2":
-            print(f.print_mängija(mängija_2))
+            print(f.print_mängija(mängija2_vara))
             
         else:
             print("See pole mängija nimi.\n")
     
-    #elif käsk == "käigu lõpp": #See käsk on selline, et initsiatiiv vahetub ning uue mängija eest veeretatakse ning maandutakse kuskil.
+    elif käsk == "käigu lõpp": #See käsk on selline, et initsiatiiv vahetub ning uue mängija eest veeretatakse ning maandutakse kuskil.
+        if käik %2==0:
+            mängija2_info=liikumine(käik,mängija2_asetus,2, mängija2_vanglas,mängija2_vangla_käik, mängija2_raha)#Saab enniku, kus esimene väärtus on mängija asetus ja teine on vangla staatus
+            mängija2_asetus = mängija2_info[0]
+            mängija2_vanglas = mängija2_info[1]
+            mängija2_vangla_käik=mängija2_info[2]
+            print("Mängija 2 on ruudul " +str(mängija2_asetus)+"\n")
+            
+            if f.näita_krunti(mängija2_asetus) != "Selle nimelist krunti pole": #kui tegu on krundiga
+                
+                if mängija2_asetus not in mängija1_vara and mängija2_asetus not in mängija2_vara:#kui keegi seda ei oma.
+                    
+                    print(f.print_krunt(f.näita_krunti(mängija2_asetus))) #annab ostmata krundi info
+                    print("")
+                    ostuotsus = input('Krunt on ostmata. Kui soovite osta, sisestage "jah".\nKui mitte, siis kirjutage "ei" ja krunt jääb vabaks.\n')
+                    
+                    while ostuotsus != "jah" and ostuotsus != "ei":#kui esitati vale sõne
+                        ostuotsus = input('Sisestage "jah" või "ei" jutumärkideta \n')
+                        
+                    if ostuotsus == "ei":
+                        print("See krunt jääb järgmist ostjat ootama.")
+                        
+                    if ostuotsus == "jah":
+                        
+                        if int((f.näita_krunti(mängija2_asetus))[1]) <= mängija2_vara[0]: #kui mängijal on piisavalt raha
+                            mängija2_vara[0] -= int((f.näita_krunti(mängija2_asetus))[1]) #lahutab mängijalt krundi hinna
+                            mängija2_vara = f.lisa_krunt(mängija2_asetus, mängija2_vara) #lisab krundi mängijale
+                            print("Kontolt eemaldatud " + str(((f.näita_krunti(mängija2_asetus))[1])) + " eurot.")
+                            print("Teie kontol on " + str(mängija2_vara[0])+ " eurot.")
+                            
+                        else:
+                            print("Teil on selle ostmiseks puudu " + str(int((f.näita_krunti(mängija2_asetus))[1]) - mängija2_vara[0]) + " eurot.")
+                            print('Te võite oma krunte pantida ettenähtud hinna eest ning siis uuesti osta proovida.\nRohkemaks infoks kirjutage "käsud".')
+                
+                
+                elif mängija2_asetus in mängija2_vara:
+                    print("Maandusite enda krundile. Nautige tasuta!")
+                    
+                else:
+                    print("Maandusite konkurendi krundile, rent on " + str((f.näita_krunti(mängija2_asetus))[2]))
+                    while int((f.näita_krunti(mängija2_asetus))[2]) > mängija2_vara[0]: #kui mängijal pole piisavalt raha, et renti maksta 
+                        print("Pole piisavalt raha.")
+                        if len(mängija2_vara) < 2: #kui mängijal pole krunte
+                            print("Teil on krundid otsas, kaotasite mängu.")
+                            käsk = "võit" #tsükli lõppu jõudes väljub mängust
+                            
+                        else:
+                            
+                            while len(mängija2_vara) > 2:
+                                pandiotsus = input('''Teil pole piisavalt raha. Peate oma krunte pangale pantima.
+Sisestage kas krundinimi või "info", et teada saada oma kruntide pantide väärtused.
+''')
+                                
+                                while pandiotsus not in mängija2_vara and pandiotsus != "info":
+                                    pandiotsus = vale_valik
+                                    pandiotsus = input("Teil puudub krunt nimega " + str(vale_valik) + '. Sisestage kas krundinimi või "info", et saada infot enda kruntide kohta.')
+                                
+                                
+                                if pandiotsus in mängija2_vara:
+                                    mängija2_vara = f.pandi_krunt(pandiotsus, mängija2_vara) #pandib krundi, lisab hinna mängijale
+                                    print("Krunt panditud, teie kontol on nüüd " + str(mängija2_vara[0]) + " eurot.")
+                                    panditud = True
+                                    
+                                else:
+                                    print("Allpool onkirjas teie krundid.\n")
+                                    if "vangla_vabastus" not in mängija: #kui vanglast pääsemise kaarti mängijal pole
+                                        u = 1
+                                        for u in range(len(mängija2_vara)):
+                                            print("Krundi " + mängija2_vara[u] + " pant on " + str((näita_krunti(pandiotsus))[5]))
+                                    
+                                    else:
+                                        indeks = mängija.index("vangla_vabastus") #eemaldab vanglast vabastuse kaardi
+                                        del mängija[indeks] #eemaldab vanglast pääsemise kaardi
+                                        u = 1
+                                        for u in range(len(mängija2_vara)):
+                                            print("Krundi " + mängija2_vara[u] + " pant on " + str((näita_krunti(pandiotsus))[5]))
+                                            
+                                        mängija.append("vangla_vabastus") #lisab selle tagasi
+                    
+                    
+                    if int((f.näita_krunti(mängija2_asetus))[2]) > mängija2_vara[0]: #kui mäng kaotati
+                        break
+                    
+                    else:
+                        mängija2_vara[0] -= int((f.näita_krunti(mängija2_asetus))[2]) #toimub rahavahetus
+                        mängija2_vara[0] += int((f.näita_krunti(mängija2_asetus))[2])
+                        print("Teie kontole jäi " + str(mängija2_vara[0]) + " eurot.")
+            else:
+                print("Maandusite asukohale " + mängija2_asetus + ". Sellel kohal siin versioonis veel funktsiooni pole.")
+                            
+                            
+                            
+                            
+                            
+        else:
+            mängija1_info=liikumine(käik,mängija1_asetus,1, mängija1_vanglas,mängija1_vangla_käik, mängija1_raha)
+            mängija1_asetus = mängija1_info[0]
+            mängija1_vanglas = mängija1_info[1]
+            mängija1_vangla_käik = mängija1_info[2]
+            print("Mängija 1 on ruudul "+str(mängija1_asetus)+"\n")
+            
+            
+            
+            if f.näita_krunti(mängija1_asetus) != "Selle nimelist krunti pole": #kui tegu on krundiga
+                
+                if mängija1_asetus not in mängija1_vara and mängija1_asetus not in mängija2_vara:#kui keegi seda ei oma.
+                    
+                    print(f.print_krunt(f.näita_krunti(mängija1_asetus))) #annab ostmata krundi info
+                    print("")
+                    ostuotsus = input('Krunt on ostmata. Kui soovite osta, sisestage "jah".\nKui mitte, siis kirjutage "ei" ja krunt jääb vabaks.\n')
+                    
+                    while ostuotsus != "jah" and ostuotsus != "ei":#kui esitati vale sõne
+                        ostuotsus = input('Sisestage "jah" või "ei" jutumärkideta \n')
+                        
+                    if ostuotsus == "ei":
+                        print("See krunt jääb järgmist ostjat ootama.")
+                        
+                    if ostuotsus == "jah":
+                        
+                        if int((f.näita_krunti(mängija1_asetus))[1]) <= mängija1_vara[0]: #kui mängijal on piisavalt raha
+                            mängija1_vara[0] -= int((f.näita_krunti(mängija1_asetus))[1]) #lahutab mängijalt krundi hinna
+                            mängija1_vara = f.lisa_krunt(mängija1_asetus, mängija1_vara) #lisab krundi mängijale
+                            print("Kontolt eemaldatud " + str(((f.näita_krunti(mängija1_asetus))[1])) + " eurot.")
+                            print("Teie kontol on " + str(mängija1_vara[0])+ " eurot.")
+                            
+                        else:
+                            print("Teil on selle ostmiseks puudu " + str(int((f.näita_krunti(mängija1_asetus))[1]) - mängija1_vara[0]) + " eurot.")
+                            print('Te võite oma krunte pantida ettenähtud hinna eest ning siis uuesti osta proovida.\nRohkemaks infoks kirjutage "käsud".')
+                
+                
+                elif mängija1_asetus in mängija1_vara:
+                    print("Maandusite enda krundile. Nautige tasuta!")
+                    
+                else:
+                    print("Maandusite konkurendi krundile, rent on " + str((f.näita_krunti(mängija1_asetus))[2]))
+                    while int((f.näita_krunti(mängija1_asetus))[2]) > mängija1_vara[0]: #kui mängijal pole piisavalt raha, et renti maksta 
+                        print("Pole piisavalt raha.")
+                        if len(mängija1_vara) < 2: #kui mängijal pole krunte
+                            print("Teil on krundid otsas, kaotasite mängu.")
+                            käsk = "võit" #tsükli lõppu jõudes väljub mängust
+                            
+                        else:
+                            
+                            while len(mängija1_vara) > 2:
+                                pandiotsus = input('''Teil pole piisavalt raha. Peate oma krunte pangale pantima.
+Sisestage kas krundinimi või "info", et teada saada oma kruntide pantide väärtused.
+''')
+                                
+                                while pandiotsus not in mängija1_vara and pandiotsus != "info":
+                                    pandiotsus = vale_valik
+                                    pandiotsus = input("Teil puudub krunt nimega " + str(vale_valik) + '. Sisestage kas krundinimi või "info", et saada infot enda kruntide kohta.')
+                                
+                                
+                                if pandiotsus in mängija1_vara:
+                                    mängija1_vara = f.pandi_krunt(pandiotsus, mängija1_vara) #pandib krundi, lisab hinna mängijale
+                                    print("Krunt panditud, teie kontol on nüüd " + str(mängija1_vara[0]) + " eurot.")
+                                    panditud = True
+                                    
+                                else:
+                                    print("Allpool onkirjas teie krundid.\n")
+                                    if "vangla_vabastus" not in mängija1_vara: #kui vanglast pääsemise kaarti mängijal pole
+                                        u = 1
+                                        for u in range(len(mängija1_vara)):
+                                            print("Krundi " + mängija1_vara[u] + " pant on " + str((näita_krunti(pandiotsus))[5]))
+                                    
+                                    else:
+                                        indeks = mängija.index("vangla_vabastus") #eemaldab vanglast vabastuse kaardi
+                                        del mängija[indeks] #eemaldab vanglast pääsemise kaardi
+                                        u = 1
+                                        for u in range(len(mängija1_vara)):
+                                            print("Krundi " + mängija1_vara[u] + " pant on " + str((näita_krunti(pandiotsus))[5]))
+                                            
+                                        mängija.append("vangla_vabastus") #lisab selle tagasi
+                    
+                    
+                    if int((f.näita_krunti(mängija1_asetus))[2]) > mängija1_vara[0]: #kui mäng kaotati
+                        break
+                    
+                    else:
+                        mängija1_vara[0] -= int((f.näita_krunti(mängija1_asetus))[2])#rendi maksmine
+                        mängija2_vara[0] += int((f.näita_krunti(mängija1_asetus))[2])
+                        print("Teie kontole jäi " + str(mängija1_vara[0]) + " eurot.")
         
-            
-            
-            
-            
-"""
-käik=1
-#sammud=0
-mängulaud=list(range(0,40))
-mängija1_asetus=0
-mängija2_asetus=0
 
-while käik <30:
-    kontroll=0
-    if käik %2==0:
-        mängija2_info=liikumine(käik,mängija2_asetus,2, mängija2_vanglas,mängija2_vangla_käik, mängija2_raha)#Saab enniku, kus esimene väärtus on mängija asetus ja teine on vangla staatus
-        mängija2_asetus = mängija2_info[0]
-        mängija2_vanglas = mängija2_info[1]
-        mängija2_vangla_käik=mängija2_info[2]
-        print("Mängija 2 on ruudul " +str(mängija2_asetus)+"\n")
+            
+            else:
+                print("Maandusite asukohale " + mängija1_asetus + ". Sellel kohal siin versioonis veel funktsiooni pole.")
+            
+            
+            
+        käik+=1
+    
+    elif käsk.split()[0] == "pandi":
+        panditav = käsk.split() #saab järjendi
+        del panditav[0] #eemaldab "pandi" osa
+        panditav = " ".join(panditav) #saab krundinime
+        if käik %2==0: #kui on 1. mängija käik
+            if panditav in mängija1_vara:
+                mängija1_vara = f.pandi_krunt(panditav, mängija1_vara) #pandib
+                print("Su kontol on nüüd " + str(mängija1_vara[0]) + " eurot.")
+                
+            else:
+                print("Sul pole seda krunti")
+                
+        else:
+            if panditav in mängija2_vara:#kui on 2. mängija käik
+                mängija2_vara = f.pandi_krunt(panditav, mängija2_vara) #pandib
+                print("Su kontol on nüüd " + str(mängija2_vara[0]) + " eurot.")
+                
+            else:
+                print("Sul pole seda krunti")
+                
+    elif käsk == "lõpp":#et järgmist rida ei rakendaks
+        ...
+        
     else:
-        mängija1_info=liikumine(käik,mängija1_asetus,1, mängija1_vanglas,mängija1_vangla_käik, mängija1_raha)
-        mängija1_asetus = mängija1_info[0]
-        mängija1_vanglas = mängija1_info[1]
-        mängija1_vangla_käik = mängija1_info[2]
-        print("Mängija 1 on ruudul "+str(mängija1_asetus)+"\n")
-    käik+=1
-        mängija1_asetus=liikumine(mängija1_asetus)
-        print("Mängija 1 on ruudul "+str(mängija1_asetus))
-    käik+=1"""
-    
+        print('See pole konsoolile tuntud käsk. Et näha käske, kirjutage "käsud".')
+
+            
 
 
-    
+print("Mängu lõpp.")    
