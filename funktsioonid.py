@@ -1,6 +1,115 @@
 import copy
 from random import randint
 
+def vanglaFunk(i,mängija_asetus, vanglas, raha):
+    mängulaud = ("Go","Jaama tänav" ,"kirst1","Soinaste tänav" ,"Tulumaks","Ülenurme rongijaam","Ravila tänav","Võimalus","Ringtee tänav" ,"Ilmatsalu tänav" ,"Vangla","Vabaduse pst" ,"Elektrivõrk","Sõbra tänav" ,"Kesk kaar" ,"Kirsi rongijaam","Kalevi tänav" ,"kirst2","F.R Kreutzvaldi tänav" ,"Vaksali tänav" ,"Tasuta parkimine","Pikk tänav" ,"võimalus2","Aardla tänav" ,"Puussepa tänav" ,"Aardla rongijaam","Puiestee tänav" ,"Kalda tee" ,"Veevärk","Võru tänav" ,"Lähed vangi","Turu tänav" ,"Narva maantee" ,"kirst3","Riia tänav" ,"Tartu rongijaam","võimalus3","Rüütli tänav" ,"Lisamaks","Raekoja plats")
+    if i==3: #kui kolm korda pole mängija saanud duublit, siis  kolmas kord saab mängija vabaks
+        i=0
+        vanglas=False
+        print("Vabanesid vanglast!")
+        mängija_asetus=mängulaud[täringuvise()+mängulaud.index(mängija_asetus)]
+        print("Mängija on ruudul "+str(mängija_asetus))
+        return mängija_asetus, vanglas, i, raha
+
+
+def täringuvise():
+    täring_1=randint(1,6)
+    täring_2=randint(1,6)
+    print(täring_1,täring_2)
+    sammud=täring_1+täring_2
+    return sammud
+
+def liikumine(käik,mängija_asetus, mängija_nr,vanglas, mängija_vangla_käik, mängija_raha):
+    mängulaud = ("Go","Jaama tänav" ,"kirst1","Soinaste tänav" ,"Tulumaks","Ülenurme rongijaam","Ravila tänav","Võimalus","Ringtee tänav" ,"Ilmatsalu tänav" ,"Vangla","Vabaduse pst" ,"Elektrivõrk","Sõbra tänav" ,"Kesk kaar" ,"Kirsi rongijaam","Kalevi tänav" ,"kirst2","F.R Kreutzvaldi tänav" ,"Vaksali tänav" ,"Tasuta parkimine","Pikk tänav" ,"võimalus2","Aardla tänav" ,"Puussepa tänav" ,"Aardla rongijaam","Puiestee tänav" ,"Kalda tee" ,"Veevärk","Võru tänav" ,"Lähed vangi","Turu tänav" ,"Narva maantee" ,"kirst3","Riia tänav" ,"Tartu rongijaam","võimalus3","Rüütli tänav" ,"Lisamaks","Raekoja plats")
+    print("Mängijal " +str(mängija_nr)+" on käik "+str(käik)) #loeb käike while-tsükli jaoks
+    kontroll=0
+    if vanglas==True:#kui mängija vangla staatus on True, käivitab vangla funktsiooni
+        return vanglaFunk(mängija_vangla_käik,mängija_asetus, vanglas, mängija_raha)
+    kontroll=0
+    sammud=0 #näitab, mitu sammu mängija liigub ja kontrollib, kas mängija tegi tiiru lauale peale
+    print("Veeretan täringuid")
+    täring_1=randint(1,6)
+    täring_2=randint(1,6)
+    print(täring_1,täring_2)
+
+    if täring_1==täring_2: #kontrollib, kas täringute silmad on võrdsed
+        print("Mängija "+str(mängija_nr)+ " veeretas duubli")
+        sammud=täring_1+täring_2
+        kontroll=mängulaud.index(mängija_asetus)+sammud #kontrollile on vaja omistada mängu praeguse ruudu indeks ja sammude summa
+
+        if kontroll>=40: #kui kontroll on võrde suurem 40, siis lahutab -40. Selleks, et saaks uut ringi alustada
+            kontroll-=40
+        mängija_asetus=mängulaud[kontroll] #Mängija asetuse võtab mängulaua indeksi järgi
+        print("Mängija on ruudul "+str(mängija_asetus)) #prindib, mis ruudul mängija hetkel on
+
+        if mängija_asetus=="Lähed vangi": #Kui mängija satub "lähed vangi" ruudule siis vangla staatus läheb Trueks
+            print("Mängija "+str(mängija_nr)+ " läheb vangi!")
+            vanglas=True
+            mängija_asetus="Vangla"
+            return mängija_asetus, vanglas, mängija_vangla_käik, mängija_raha
+
+        ("Veeretan täringuid")
+        täring_1=randint(1,6)
+        täring_2=randint(1,6)
+        print(täring_1,täring_2)
+
+        if täring_1==täring_2: #Kontrollib uuesti tuublit
+            print("Mängija "+str(mängija_nr)+ " veeretas duubli uuesti")
+            sammud=täring_1+täring_2
+            kontroll=sammud+mängulaud.index(mängija_asetus)
+
+            if kontroll>=40:
+                kontroll-=40
+            mängija_asetus=mängulaud[kontroll]
+            print("Mängija on ruudul "+str(mängija_asetus))#Kontrollib uuesti kas sattus vangi
+
+            if mängija_asetus=="Lähed vangi":
+                vanglas=True
+                mängija_asetus="Vangla"
+                print("Mängija "+ str(mängija_nr)+ " läheb vangi!")
+                return mängija_asetus, vanglas, mängija_vangla_käik, mängija_raha
+
+            print("Veeretan täringuid")
+            täring_1=randint(1,6)
+            täring_2=randint(1,6)
+            print(täring_1,täring_2)
+
+            if täring_1==täring_2: #kolmas järjestikune duubli veeretamine tähendab vanglasse minemist
+                print("Mängija viskas kolmanda järjestikuse duubli!")
+                vanglas=True
+                mängija_asetus="Vangla"
+                print("Mängija "+str(mängija_nr)+ " läheb vangi!")
+                return mängija_asetus, vanglas, mängija_vangla_käik, mängija_raha
+
+        sammud=täring_1+täring_2 #Kui duublit kolmandat korda ei tule, käib tavapärane mängija asetuse arvutamine ja tingimuste täitmine
+        kontroll=sammud+mängulaud.index(mängija_asetus) 
+
+        if kontroll>=40:
+            kontroll-=40
+        mängija_asetus=mängulaud[kontroll]
+        print("Mängija on ruudul "+str(mängija_asetus))
+
+        if mängija_asetus=="Lähed vangi":
+            vangla=True
+            mängija_asetus="Vangla"
+            print("Mängija "+str(mängija_nr)+ " läheb vangi!")
+            return mängija_asetus, vanglas, mängija_vangla_käik, mängija_raha
+        return mängija_asetus, vanglas, mängija_vangla_käik, mängija_raha
+
+    sammud=täring_1+täring_2 #Kui duublit ei tule, käib mängija positsiooni arvutamine tavaapäraselt
+    kontroll=sammud+mängulaud.index(mängija_asetus)
+    if kontroll>=40:
+            kontroll-=40
+            print("Mängija tegi mängulauale tiiru peale")
+            mängija_raha+=200
+    mängija_asetus=mängulaud[kontroll]
+    if mängija_asetus=="Lähed vangi":
+        vanglas=True
+        mängija_asetus="Vangla"
+        print("Mängija "+ str(mängija_nr)+ " läheb vangi!")
+        return mängija_asetus, vanglas, mängija_vangla_käik, mängija_raha
+    return mängija_asetus, vanglas, mängija_vangla_käik, mängija_raha
+
 def näita_värvi(värv): #See väljastab mingi värvi kõigi kruntide muutujad selles järjekorras:
                         #tänavanimi, hind, rent, rent kui ühel mängijal värv on koos, rent hotelliga, pant, hotelli hind
     

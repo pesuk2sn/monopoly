@@ -2,6 +2,8 @@ import pygame
 import sys
 #from monopoly import täringuvise
 import random
+from pygame.locals import *
+from funktsioonid import *
 
 pygame.init()
 
@@ -18,7 +20,11 @@ ikoon=pygame.image.load("pildid/ikoon.png")
 mängija_1=pygame.image.load("pildid/mängija1.png")
 mängija_1=pygame.transform.scale(mängija_1, (128, 72))
 mängija_2=pygame.image.load("pildid/mängija2.png")
-mängija_2=pygame.transform.scale(mängija_2, (150, 150))
+mängija_2=pygame.transform.scale(mängija_2, (80, 80))
+mängija_1_pos=mängija_1.get_rect(topleft=(780,780))
+mängija_2_pos=mängija_2.get_rect(topleft=(800,800))
+current_image= None
+LeftButton = 0
 pygame.display.set_icon(ikoon)
 pygame.display.set_caption("Monopoly")
 laua_ikoon=pygame.image.load("pildid/laua_ikoon.png")
@@ -34,15 +40,8 @@ vanglasse_ikoon=pygame.transform.scale(vanglasse_ikoon,(90,90))
 vanglasse_ikoon=pygame.transform.rotate(vanglasse_ikoon, -45)
 go_ikoon=pygame.image.load("pildid/go.jpg")
 go_ikoon=pygame.transform.scale(go_ikoon,(106,100.2))
-ristkülik=5, 5, 5, 5, 5
 font=pygame.font.SysFont("Microsoft Sans Serif", 10)
-
-def täringuvise():
-    täring_1=random.randint(1,6)
-    täring_2=random.randint(1,6)
-    print(täring_1,täring_2)
-    sammud=täring_1+täring_2
-    return sammud
+font2=pygame.font.SysFont("Microsoft Sans Serif", 40)
 
 def mängulaud():
 
@@ -86,8 +85,12 @@ def ikoonid():
    screen.blit(vangla_ikoon,(33,779))
    screen.blit(vanglasse_ikoon,(780,-10))
    screen.blit(go_ikoon,(780,780))
-   screen.blit(mängija_1,(800,800))
-   screen.blit(mängija_2(700,700))
+
+def numbrid():
+  sammud = font2.render("Sammud: "+ str(täringuvise()), True, black)
+  sammudKast = sammud.get_rect()
+  sammudKast.center =(300,300)
+  screen.blit(sammud, sammudKast)
 
 def kirjed():
   ülemine_rida=["PIKK   ","VÕIMALUS2","AARDLA","AARDLA","PUUSSEPA", "PUIESTEE","KALDA", "VEEVÄRK", "VÕRU"]
@@ -127,22 +130,31 @@ def kirjed():
 
 while True:
     screen.fill(green)
+    numbrid()
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
             sys.exit()
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and x >0:
-      x-=vel*täringuvise()
-    if keys[pygame.K_RIGHT] and x<885-width:
-      x+=vel
-    if keys[pygame.K_UP] and y>0:
-      y-=vel
-    if keys[pygame.K_DOWN] and y<885-height:
-      y+=vel
-    
+        if event.type==pygame.MOUSEBUTTONDOWN:
+          if mängija_1_pos.collidepoint(event.pos):
+            current_image=0
+          elif mängija_2_pos.collidepoint(event.pos):
+            current_image=1
+          else:
+            current_image=None
+        if event.type ==MOUSEMOTION:
+          if event.buttons[LeftButton]:
+            rel = event.rel
+            if current_image == 0:
+              mängija_1_pos.x +=rel[0]
+              mängija_1_pos.y+= rel[1]
+            elif current_image == 1:
+              mängija_2_pos.x += rel[0]
+              mängija_2_pos.y += rel[1]
    
     mängulaud()
     ikoonid()
     kirjed() 
-    pygame.draw.rect(screen,(255,0,0),(x,y,width,height))
+    numbrid()
+    screen.blit(mängija_1, mängija_1_pos)
+    screen.blit(mängija_2, mängija_2_pos)
     pygame.display.update()
