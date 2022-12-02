@@ -15,6 +15,10 @@ width = 20
 height=20
 vel= 10
 ikoon=pygame.image.load("pildid/ikoon.png")
+mängija_1=pygame.image.load("pildid/mängija1.png")
+mängija_1=pygame.transform.scale(mängija_1, (128, 72))
+mängija_2=pygame.image.load("pildid/mängija2.png")
+mängija_2=pygame.transform.scale(mängija_2, (150, 150))
 pygame.display.set_icon(ikoon)
 pygame.display.set_caption("Monopoly")
 laua_ikoon=pygame.image.load("pildid/laua_ikoon.png")
@@ -82,6 +86,8 @@ def ikoonid():
    screen.blit(vangla_ikoon,(33,779))
    screen.blit(vanglasse_ikoon,(780,-10))
    screen.blit(go_ikoon,(780,780))
+   screen.blit(mängija_1,(800,800))
+   screen.blit(mängija_2(700,700))
 
 def kirjed():
   ülemine_rida=["PIKK   ","VÕIMALUS2","AARDLA","AARDLA","PUUSSEPA", "PUIESTEE","KALDA", "VEEVÄRK", "VÕRU"]
