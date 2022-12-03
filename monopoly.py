@@ -81,7 +81,7 @@ while käsk != "mängu lõpp" and käsk != "võit":
     
     elif (käsk.split()[0]).lower() == "lõpp" or (käsk.split()[0]).lower() == "algus": #See käsk on selline, et initsiatiiv vahetub ning uue mängija eest veeretatakse ning maandutakse kuskil.
         if käik %2==0:
-            mängija2_info=liikumine(käik,mängija2_asetus,2, mängija2_vanglas,mängija2_vangla_käik, mängija2_vara[0])#Saab enniku, kus esimene väärtus on mängija asetus ja teine on vangla staatus
+            mängija2_info=f.liikumine(käik,mängija2_asetus,2, mängija2_vanglas,mängija2_vangla_käik, mängija2_vara[0])#Saab enniku, kus esimene väärtus on mängija asetus ja teine on vangla staatus
             mängija2_asetus = mängija2_info[0]
             mängija2_vanglas = mängija2_info[1]
             mängija2_vangla_käik=mängija2_info[2]
@@ -203,7 +203,7 @@ Elektrivõrgu ja veevärgi hind on 150 eurot.
                             
                             
         else:
-            mängija1_info=liikumine(käik,mängija1_asetus,1, mängija1_vanglas,mängija1_vangla_käik, mängija1_vara[0])
+            mängija1_info=f.liikumine(käik,mängija1_asetus,1, mängija1_vanglas,mängija1_vangla_käik, mängija1_vara[0])
             mängija1_asetus = mängija1_info[0]
             mängija1_vanglas = mängija1_info[1]
             mängija1_vangla_käik = mängija1_info[2]
@@ -366,7 +366,7 @@ Elektrivõrgu ja veevärgi hind on 150 eurot.
         print(panditav)
         if käik %2==0: #kui on 1. mängija käik
             if panditav in mängija1_vara:
-                if panditav in väljasta_tänavad(mängija1_vara):
+                if panditav in f.väljasta_tänavad(mängija1_vara):
                     mängija1_vara = f.pandi_krunt(panditav, mängija1_vara) #pandib
                     print("Teie kontol on nüüd " + str(mängija1_vara[0]) + " eurot.")
                 else:
@@ -377,7 +377,7 @@ Elektrivõrgu ja veevärgi hind on 150 eurot.
                 
         else:
             if panditav in mängija2_vara:#kui on 2. mängija käik
-                if panditav in väljasta_tänavad(mängija2_vara):
+                if panditav in f.väljasta_tänavad(mängija2_vara):
                     mängija2_vara = f.pandi_krunt(panditav, mängija2_vara) #pandib
                     print("Teie kontol on nüüd " + str(mängija2_vara[0]) + " eurot.")
                 else:
@@ -508,10 +508,10 @@ Elektrivõrgu ja veevärgi hind on 150 eurot.
 
 if mängija1_vara[0] < 0: #kui keegi võitis mängu
     print("Palju õnne mängija 2! Te olete rivaalitu äriparun. Teie varad on järgnevad:")
-    print_mängija(mängija2_vara, hotellid)
+    f.print_mängija(mängija2_vara, hotellid)
     
 elif mängija2_vara[0] < 0:
     print("Palju õnne mängija 1! Te olete rivaalitu äriparun. Teie varad on järgnevad:")
-    print_mängija(mängija1_vara, hotellid)
+    f.print_mängija(mängija1_vara, hotellid)
     
 print("Mängu lõpp.")

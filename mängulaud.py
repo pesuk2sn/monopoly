@@ -1,16 +1,18 @@
 import pygame
 import sys
-#from monopoly import täringuvise
-import random
 from pygame.locals import *
 from funktsioonid import *
+import pygame_gui
+from time import sleep
 
 pygame.init()
 
 screen=pygame.display.set_mode((885,885), pygame.RESIZABLE)
 green=159,226,191
 black=0,0,0
-
+manager = pygame_gui.UIManager((885,885))
+veereta_täringud_nupp = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),text='Veereta täringuid',manager=manager)
+kell = pygame.time.Clock()
 x=800
 y=800
 width = 20
@@ -91,7 +93,10 @@ def numbrid():
   sammudKast = sammud.get_rect()
   sammudKast.center =(300,300)
   screen.blit(sammud, sammudKast)
-
+  #mängija_info = font2.render("Mängija info: "+str(liikumine()), True, black)
+  #mängija_info_kast=mängija_info.get_rect()
+  #mängija_info_kast.center=(500,500)
+  #screen.blit(mängija_info,mängija_info_kast)
 def kirjed():
   ülemine_rida=["PIKK   ","VÕIMALUS2","AARDLA","AARDLA","PUUSSEPA", "PUIESTEE","KALDA", "VEEVÄRK", "VÕRU"]
   ülemine_rida_hinnad=["220",None, "220", None, "240", "260", "260", None, "280"  ]
@@ -130,7 +135,7 @@ def kirjed():
 
 while True:
     screen.fill(green)
-    numbrid()
+    aeg_delta=kell.tick(60)/1000.0
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
             sys.exit()
@@ -150,11 +155,16 @@ while True:
             elif current_image == 1:
               mängija_2_pos.x += rel[0]
               mängija_2_pos.y += rel[1]
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+              if event.ui_element == veereta_täringud_nupp:
+                  print(täringuvise())
+        manager.process_events(event)
+    manager.update(aeg_delta)
    
     mängulaud()
     ikoonid()
     kirjed() 
-    numbrid()
+    manager.draw_ui(screen)
     screen.blit(mängija_1, mängija_1_pos)
     screen.blit(mängija_2, mängija_2_pos)
     pygame.display.update()
